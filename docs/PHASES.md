@@ -159,3 +159,126 @@ python3 tools/reset_redis.py
 - Noch keine Sportlogik  
 
 Phase 1 ist vollständig abgeschlossen.
+
+
+---
+
+# PHASE 2 — API BASIS (Tag 3)
+
+Ziel: FastAPI starten, Router einbinden, Redis-State-Endpunkte funktionsfähig.
+
+## 2.1 FastAPI & Uvicorn installieren
+
+```bash
+source .venv/bin/activate
+pip install fastapi uvicorn[standard] redis
+```
+
+## 2.2 api/main.py erstellt
+
+```python
+from fastapi import FastAPI
+
+from api.state.router import router as state_router
+from api.start.router import router as start_router
+from api.startlist.router import router as startlist_router
+from api.biathlon.router import router as biathlon_router
+
+app = FastAPI(title="Multisport GFX Engine V2")
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "engine": "gfx-engine-v2"}
+
+app.include_router(state_router,     prefix="/state",     tags=["state"])
+app.include_router(start_router,     prefix="/start",     tags=["start"])
+app.include_router(startlist_router, prefix="/startlist", tags=["startlist"])
+app.include_router(biathlon_router,  prefix="/biathlon",  tags=["biathlon"])
+```
+
+## 2.3 Router für state/start/startlist/biathlon ergänzt
+
+### Beispiel state-Router:
+
+```python
+from fastapi import APIRouter
+from core.redis import get_json, set_json
+
+router = APIRouter()
+
+@router.get("/ping")
+async def ping():
+    return {"status": "ok", "component": "state"}
+
+@router.get("/get/{key}")
+async def get_state(key: str):
+    return {"key": key, "value": get_json(f"state:{key}")}
+
+@router.post("/set/{key}")
+async def set_state(key: str, payload: dict):
+    set_json(f"state:{key}", payload)
+    return {"status": "stored", "key": key, "value": payload}
+```
+
+Alle anderen Router erhielten mindestens:
+
+```python
+router = APIRouter()
+
+@router.get("/ping")
+async def ping():
+    return {"status": "ok", "component": "<name>"}
+```
+
+## 2.4 API manuell gestartet
+
+```bash
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Erfolgreicher Start:
+
+```
+Uvicorn running on http://0.0.0.0:8000
+```
+
+## 2.5 API Funktionstests
+
+### Ping:
+
+```
+http://<server>:8000/state/ping
+```
+
+→ `200 OK`
+
+### JSON setzen:
+
+```bash
+curl -X POST "http://localhost:8000/state/set/test" \
+     -H "Content-Type: application/json" \
+     -d '{"hello":"world"}'
+```
+
+### JSON lesen:
+
+```bash
+curl http://localhost:8000/state/get/test
+```
+
+### Redis prüfen:
+
+```bash
+redis-cli GET gfx:state:test
+```
+
+## 2.6 Phase-2 Status
+
+- FastAPI lauffähig  
+- Router eingebunden  
+- state/set + state/get funktionsfähig  
+- API ↔ Redis vollständig getestet  
+- Alle Router antworten `/ping`  
+- Basis für Dashboard & Renderer steht  
+
+**Phase 2 abgeschlossen.**
