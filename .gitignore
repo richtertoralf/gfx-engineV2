@@ -3,3 +3,11 @@ __pycache__/
 .env
 .venv/
 venv/
+
+# OS / Editor garbage
+.DS_Store
+.vscode/
+.idea/
+
+# Redis dump (falls später verwendet)
+dump.rdb
