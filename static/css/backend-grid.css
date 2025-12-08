@@ -1,0 +1,114 @@
+/* ===========================
+   SNOWGAMES – 16×9 GRID LAYOUT
+   =========================== */
+
+#dashboard-grid {
+    display: grid;
+    width: 100%;
+    height: 100vh;
+
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+
+    gap: 4px;
+}
+
+/* ===========================
+   Zeile 1–2
+   =========================== */
+
+#tile-event-info {
+    grid-column: 1 / 5;     /* x1–4 */
+    grid-row: 1 / 3;        /* Z1–2 */
+}
+
+#tile-startlist-import {
+    grid-column: 5 / 9;     /* x5–8 */
+    grid-row: 1 / 3;        /* Z1–2 */
+}
+
+#tile-text-info {
+    grid-column: 9 / 17;    /* x9–16 */
+    grid-row: 1 / 3;        /* Z1–2 */
+}
+
+/* ===========================
+   Zeile 3–4
+   =========================== */
+
+#tile-weather {
+    grid-column: 1 / 5;     /* x1–4 */
+    grid-row: 3 / 5;        /* Z3–4 */
+}
+
+#tile-startlist-view {
+    grid-column: 5 / 9;     /* x5–8 */
+    grid-row: 3 / 5;        /* Z3–4 */
+}
+
+#tile-announcer-info {
+    grid-column: 9 / 13;    /* x9–12 */
+    grid-row: 3 / 5;        /* Z3–4 */
+}
+
+#tile-branding {
+    grid-column: 13 / 17;   /* x13–16 */
+    grid-row: 3 / 5;        /* Z3–4 */
+}
+
+/* ===========================
+   Zeile 5–6
+   =========================== */
+
+#tile-race-timer {
+    grid-column: 1 / 5;     /* x1–4 */
+    grid-row: 5 / 7;        /* Z5–6 */
+}
+
+#tile-start-control {
+    grid-column: 5 / 9;     /* x5–8 */
+    grid-row: 5 / 7;        /* Z5–6 */
+}
+
+#tile-athlete-live {
+    grid-column: 9 / 13;    /* x9–12 */
+    grid-row: 5 / 7;        /* Z5–6 */
+}
+
+#tile-biathlon-athlete-detail {
+    grid-column: 13 / 17;   /* x13–16 */
+    grid-row: 5 / 7;        /* Z5–6 */
+}
+
+/* ===========================
+   Zeile 7–8
+   =========================== */
+
+#tile-finish-ranking {
+    grid-column: 1 / 5;     /* x1–4 */
+    grid-row: 7 / 9;        /* Z7–8 */
+}
+
+#tile-results-full {
+    grid-column: 5 / 9;     /* x5–8 */
+    grid-row: 7 / 9;        /* Z7–8 */
+}
+
+#tile-empty {
+    grid-column: 9 / 13;    /* x9–12 */
+    grid-row: 7 / 9;        /* Z7–8 */
+}
+
+#tile-biathlon-lane-overview {
+    grid-column: 13 / 17;   /* x13–16 */
+    grid-row: 7 / 9;        /* Z7–8 */
+}
+
+/* ===========================
+   Zeile 9
+   =========================== */
+
+#tile-system-status {
+    grid-column: 1 / 17;    /* x1–16 */
+    grid-row: 9 / 10;       /* Z9 */
+}

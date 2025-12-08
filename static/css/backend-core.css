@@ -1,0 +1,47 @@
+/* ===========================
+   SNOWGAMES – Backend Core Styles
+   =========================== */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #111;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* Grundlayout einer Tile */
+.tile {
+    background: #1c1c1c;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header innerhalb einer Tile (optional später JS) */
+.tile h1, .tile h2, .tile h3 {
+    margin: 0 0 8px 0;
+    padding: 0;
+}
+
+/* Biathlon Tiles sind nur sichtbar, wenn das Dashboard "BT" ist */
+.tile[data-scope="BT"] {
+    display: block;
+}
+
+body.biathlon .tile[data-scope="BT"] {
+    display: flex;
+}
+
+/* Leere Tiles sichtbar halten */
+#tile-empty {
+    background: #181818;
+    border-style: dashed;
+    opacity: 0.5;
+}
