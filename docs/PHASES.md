@@ -282,3 +282,126 @@ redis-cli GET gfx:state:test
 - Basis für Dashboard & Renderer steht  
 
 **Phase 2 abgeschlossen.**
+
+
+---
+
+# PHASE 3 — API-Laufsystem & Event-Basis (Tag 4)
+
+Ziel: Die API dauerhaft betreiben, Logging aktivieren und einen universellen Event-Endpunkt bereitstellen, den das Dashboard später nutzt.
+
+## 3.1 systemd-Service für die API
+
+Service-Datei erstellt:
+
+```
+sudo nano /etc/systemd/system/gfx-engine.service
+```
+
+Inhalt:
+
+```
+[Unit]
+Description=Snowgames Multisport GFX Engine API
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/gfx-engine
+ExecStart=/opt/gfx-engine/.venv/bin/uvicorn api.main:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=3
+StandardOutput=append:/var/log/gfx-engine/api.log
+StandardError=append:/var/log/gfx-engine/api.log
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Log-Ordner:
+
+```bash
+sudo mkdir -p /var/log/gfx-engine
+sudo chown tori:tori /var/log/gfx-engine
+```
+
+Service aktiviert:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now gfx-engine
+```
+
+## 3.2 Logging implementiert
+
+Datei `core/logging.py`:
+
+```python
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
+
+logger = logging.getLogger("gfx-engine")
+```
+
+## 3.3 Event-Router erstellt
+
+Neuer Ordner:
+
+```
+api/event/
+```
+
+Datei `api/event/router.py`:
+
+```python
+from fastapi import APIRouter
+from core.redis import set_json
+from core.logging import logger
+
+router = APIRouter()
+
+@router.post("/trigger")
+async def trigger_event(payload: dict):
+    event_type = payload.get("type", "UNKNOWN")
+    set_json("event:last", payload)
+    logger.info("Event received: %s", event_type)
+    return {"status": "ok", "event": event_type}
+```
+
+Router in `api/main.py` eingebunden:
+
+```python
+from api.event.router import router as event_router
+app.include_router(event_router, prefix="/event", tags=["event"])
+```
+
+## 3.4 Event-Endpunkt getestet
+
+Event senden:
+
+```bash
+curl -X POST http://localhost:8000/event/trigger \
+     -H "Content-Type: application/json" \
+     -d '{"type":"TEST_EVENT","data":{"foo":123}}'
+```
+
+Redis prüfen:
+
+```bash
+redis-cli GET gfx:event:last
+```
+
+## 3.5 Phase 3 – Status
+
+- systemd-Service installiert und läuft  
+- Logging aktiv  
+- Event-Router vorhanden  
+- Dashboard kann später universelle Events senden  
+- Renderer kann später darauf reagieren  
+- Keine endgültige Event-Struktur nötig (wird erst im Dashboard definiert)
+
+**Phase 3 abgeschlossen.**

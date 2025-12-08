@@ -9,11 +9,11 @@ from dataclasses import dataclass
 
 @dataclass
 class Settings:
-    # Basis-Einstellung für Redis
     REDIS_URL: str = "redis://localhost:6379/0"
-
-    # Präfix für alle Keys, um Namespace sauber zu halten
     NAMESPACE: str = "gfx:"
+    API_HOST: str = "0.0.0.0"
+    API_PORT: int = 8000
+    API_DEBUG: bool = True
 
 
 settings = Settings()
