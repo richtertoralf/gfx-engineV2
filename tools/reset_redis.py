@@ -1,8 +1,9 @@
-"""
-tools.reset_redis
------------------
-Löscht alle GFX-relevanten Redis-Keys.
-"""
+import os
+import sys
+
+# Projekt-Root zum Python-Pfad hinzufügen
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(ROOT)
 
 from core.redis import delete_pattern
 
@@ -22,4 +23,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
