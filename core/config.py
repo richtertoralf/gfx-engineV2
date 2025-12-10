@@ -83,14 +83,6 @@ PATHS = PathsConfig(**raw["paths"])
 LOGGING = LoggingConfig(**raw["logging"])
 FEATURES = FeatureTree(**raw["features"])
 
-# Rückwärtskompatible Kurzvariablen
-API_HOST = SERVER.host
-API_PORT = SERVER.port
-API_DEBUG = SERVER.debug
-
-REDIS_URL = REDIS.url
-NAMESPACE = REDIS.namespace
-
 
 # ============================================================
 # Debug-Ausgabe (falls aktiviert)

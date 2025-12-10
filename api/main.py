@@ -24,21 +24,25 @@ async def root():
 
 
 # =====================================================
-# STATIC FILES (ABSOLUTE PFAD!)
+# STATIC FILES (NEUES V2-PATH SYSTEM)
 # =====================================================
 
-# /static → CSS, JS, Icons
 app.mount(
     "/static",
-    StaticFiles(directory=PATHS.static_dir),
+    StaticFiles(directory=PATHS.static),
     name="static"
 )
 
-# /dashboard → HTML UI
 app.mount(
     "/dashboard",
-    StaticFiles(directory=PATHS.dashboard_dir),
+    StaticFiles(directory=PATHS.dashboard),
     name="dashboard"
+)
+
+app.mount(
+    "/renderer",
+    StaticFiles(directory=PATHS.renderer),
+    name="renderer"
 )
 
 
