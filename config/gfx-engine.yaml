@@ -1,0 +1,39 @@
+# ============================================================
+# GFX ENGINE V2 – SYSTEMKONFIGURATION (modular & zukunftssicher)
+# ============================================================
+
+server:
+  host: "0.0.0.0"
+  port: 8720
+  debug: true
+
+redis:
+  host: "localhost"
+  port: 6379
+  db: 0
+  namespace: "gfx:"
+
+paths:
+  dashboard: "dashboard"
+  renderer: "renderer"
+  static: "static"
+
+logging:
+  level: "INFO"
+
+features:
+  core:
+    websocket_updates: true
+    multisport: true
+
+  sports:
+    biathlon: true
+    xc_ski: true            # ✔ kannst du aktivieren/abschalten
+    ski_jumping: false      # ✔ Platzhalter
+    mtb: false
+    alpine: false
+
+  imports:
+    kes_hora: false
+    winlaufen: true
+    race_result: false

@@ -12,57 +12,77 @@ Zentrale Funktionen:
 
 import json
 import redis
-from .config import settings
+from .config import REDIS  # neue V2-Konfiguration
 
 
-# ---------------------------------------------
-# Redis-Client – Singleton
-# ---------------------------------------------
+# -------------------------------------------------------
+# Redis-Client – Singleton / Lazy Initialization
+# -------------------------------------------------------
+_redis_client = None
+
+
 def _get_client():
-    return redis.Redis.from_url(
-        settings.REDIS_URL,
-        decode_responses=True  # damit Strings automatisch UTF-8 sind
-    )
+    """Erzeugt den Redis-Client nur einmal (Lazy Loading)."""
+    global _redis_client
+    if _redis_client is None:
+        _redis_client = redis.Redis(
+            host=REDIS.host,
+            port=REDIS.port,
+            db=REDIS.db,
+            decode_responses=True
+        )
+    return _redis_client
 
 
-client = _get_client()
+# -------------------------------------------------------
+# Namespacing
+# -------------------------------------------------------
+def _ns(key: str) -> str:
+    """Fügt automatisch das Namespace-Präfix hinzu."""
+    return f"{REDIS.namespace}{key}"
 
 
-# ---------------------------------------------
-# JSON holen
-# ---------------------------------------------
+# -------------------------------------------------------
+# JSON lesen
+# -------------------------------------------------------
 def get_json(key: str):
-    key = settings.NAMESPACE + key
-    raw = client.get(key)
+    """Liest JSON-Daten aus Redis und wandelt sie in Python-Objekte um."""
+    raw = _get_client().get(_ns(key))
     if raw is None:
         return None
-    return json.loads(raw)
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        return None
 
 
-# ---------------------------------------------
-# JSON setzen
-# ---------------------------------------------
+# -------------------------------------------------------
+# JSON schreiben
+# -------------------------------------------------------
 def set_json(key: str, data):
-    key = settings.NAMESPACE + key
-    client.set(key, json.dumps(data))
+    """Speichert Python-Objekte als JSON in Redis."""
+    raw = json.dumps(data)
+    return _get_client().set(_ns(key), raw)
 
 
-# ---------------------------------------------
+# -------------------------------------------------------
 # Key existiert?
-# ---------------------------------------------
+# -------------------------------------------------------
 def exists(key: str) -> bool:
-    key = settings.NAMESPACE + key
-    return client.exists(key) == 1
+    return _get_client().exists(_ns(key)) > 0
 
 
-# ---------------------------------------------
+# -------------------------------------------------------
 # Keys nach Pattern löschen
-# ---------------------------------------------
+# -------------------------------------------------------
 def delete_pattern(pattern: str):
-    pattern = settings.NAMESPACE + pattern
-    keys = client.keys(pattern)
-    for k in keys:
-        client.delete(k)
+    """
+    Löscht alle Keys, die auf das Pattern passen.
+    Beispiel: delete_pattern("startlist:*")
+    """
+    client = _get_client()
+    full_pattern = _ns(pattern)
+    keys = client.keys(full_pattern)
+    if keys:
+        client.delete(*keys)
     return len(keys)
-
-
