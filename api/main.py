@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+import api.state.websocket_manager
+
 
 # V2-Konfiguration laden
 from core.config import PATHS
