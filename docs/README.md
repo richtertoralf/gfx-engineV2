@@ -107,11 +107,9 @@ Ergebnisse (generisch)
 
 ### Disziplinspezifisch (abhängig von event.discipline):
 
-Biathlon: Schießbahnen, Strafen, KES
+Biathlon: Schießbahnen, Strafen, KES und HoRa Parser
 
 Skispringen: Weite, Wind, Gate
-
-XC / MTB: Runden- & Zwischenzeiten
 
 ## Ausfallsicherheit
 
