@@ -1,6 +1,8 @@
-/* ===========================
-   SNOWGAMES – 16×9 GRID LAYOUT
-   =========================== */
+/* ==========================================================================
+   SNOWGAMES.LIVE – BACKEND GRID LAYOUT
+   Fixed 16 × 16 Grid
+   Tile heights are defined by grid-row spans (no auto height)
+   ========================================================================== */
 
 #dashboard-grid {
     display: grid;
@@ -8,107 +10,133 @@
     height: 100vh;
 
     grid-template-columns: repeat(16, 1fr);
-    grid-template-rows: repeat(9, 1fr);
+    grid-template-rows: repeat(16, 1fr);
 
-    gap: 4px;
+    gap: 3px;
 }
 
-/* ===========================
-   Zeile 1–2
-   =========================== */
+/* ==========================================================================
+   TOP AREA
+   Rows 1–6
+   Event setup, startlist, text / info
+   ========================================================================== */
 
+/* Event Information
+   Columns: 1–4 | Rows: 1–6 (6 rows) */
 #tile-event-info {
-    grid-column: 1 / 5;     /* x1–4 */
-    grid-row: 1 / 3;        /* Z1–2 */
+    grid-column: 1 / 5;
+    grid-row: 1 / 7;
 }
 
-#tile-startlist-import {
-    grid-column: 5 / 9;     /* x5–8 */
-    grid-row: 1 / 3;        /* Z1–2 */
-}
-
+/* Text & Info Panels
+   Columns: 9–16 | Rows: 1–6 (6 rows) */
 #tile-text-info {
-    grid-column: 9 / 17;    /* x9–16 */
-    grid-row: 1 / 3;        /* Z1–2 */
+    grid-column: 9 / 17;
+    grid-row: 1 / 7;
 }
 
-/* ===========================
-   Zeile 3–4
-   =========================== */
-
+/* Weather
+   Columns: 5–8 | Rows: 1–6 (6 rows) */
 #tile-weather {
-    grid-column: 1 / 5;     /* x1–4 */
-    grid-row: 3 / 5;        /* Z3–4 */
+    grid-column: 5 / 9;
+    grid-row: 1 / 7;
 }
 
-#tile-startlist-view {
-    grid-column: 5 / 9;     /* x5–8 */
-    grid-row: 3 / 5;        /* Z3–4 */
+/* ==========================================================================
+   CONTEXT / META
+   Rows 7–10
+   Startlist, caption, branding
+   ========================================================================== */
+
+/* Startlist Import
+   Columns: 1–4 | Rows: 7–10 (4 rows) */
+#tile-startlist-import {
+    grid-column: 1 / 5;
+    grid-row: 7 / 11;
 }
 
+/* Name Caption
+   Columns: 9–12 | Rows: 7–10 (4 rows) */
 #tile-announcer-info {
-    grid-column: 9 / 13;    /* x9–12 */
-    grid-row: 3 / 5;        /* Z3–4 */
+    grid-column: 9 / 13;
+    grid-row: 7 / 11;
 }
 
+/* Branding
+   Columns: 13–16 | Rows: 7–10 (4 rows) */
 #tile-branding {
-    grid-column: 13 / 17;   /* x13–16 */
-    grid-row: 3 / 5;        /* Z3–4 */
+    grid-column: 13 / 17;
+    grid-row: 7 / 11;
 }
 
-/* ===========================
-   Zeile 5–6
-   =========================== */
+/* ==========================================================================
+   LIVE CONTROL – CORE OPERATOR AREA
+   Rows 11–13
+   ========================================================================== */
 
+/* Clock / Race Timer
+   Columns: 1–4 | Rows: 11–13 (3 rows) */
 #tile-race-timer {
-    grid-column: 1 / 5;     /* x1–4 */
-    grid-row: 5 / 7;        /* Z5–6 */
+    grid-column: 1 / 5;
+    grid-row: 11 / 14;
 }
 
+/* Start Overlay
+   Columns: 5–8 | Rows: 11–13 (3 rows) */
 #tile-start-control {
-    grid-column: 5 / 9;     /* x5–8 */
-    grid-row: 5 / 7;        /* Z5–6 */
+    grid-column: 5 / 9;
+    grid-row: 11 / 14;
 }
 
+/* Athlete Live
+   Columns: 9–12 | Rows: 11–13 (3 rows) */
 #tile-athlete-live {
-    grid-column: 9 / 13;    /* x9–12 */
-    grid-row: 5 / 7;        /* Z5–6 */
+    grid-column: 9 / 13;
+    grid-row: 11 / 14;
 }
 
+/* Biathlon Athlete Detail
+   Columns: 13–16 | Rows: 11–13 (3 rows) */
 #tile-biathlon-athlete-detail {
-    grid-column: 13 / 17;   /* x13–16 */
-    grid-row: 5 / 7;        /* Z5–6 */
+    grid-column: 13 / 17;
+    grid-row: 11 / 14;
 }
 
-/* ===========================
-   Zeile 7–8
-   =========================== */
+/* ==========================================================================
+   RESULTS / SPECIAL MODULES
+   Rows 14–15
+   ========================================================================== */
 
+/* Finish Ranking
+   Columns: 1–4 | Rows: 14–15 (2 rows) */
 #tile-finish-ranking {
-    grid-column: 1 / 5;     /* x1–4 */
-    grid-row: 7 / 9;        /* Z7–8 */
+    grid-column: 1 / 5;
+    grid-row: 14 / 16;
 }
 
+/* Full Results
+   Columns: 5–8 | Rows: 14–15 (2 rows) */
 #tile-results-full {
-    grid-column: 5 / 9;     /* x5–8 */
-    grid-row: 7 / 9;        /* Z7–8 */
+    grid-column: 5 / 9;
+    grid-row: 14 / 16;
 }
 
-#tile-empty {
-    grid-column: 9 / 13;    /* x9–12 */
-    grid-row: 7 / 9;        /* Z7–8 */
-}
-
+/* Biathlon Lane Overview
+   Columns: 13–16 | Rows: 14–15 (2 rows) */
 #tile-biathlon-lane-overview {
-    grid-column: 13 / 17;   /* x13–16 */
-    grid-row: 7 / 9;        /* Z7–8 */
+    grid-column: 13 / 17;
+    grid-row: 14 / 16;
 }
 
-/* ===========================
-   Zeile 9
-   =========================== */
+/* ==========================================================================
+   FOOTER
+   Row 16
+   System status bar
+   ========================================================================== */
 
+/* System Status
+   Columns: 1–16 | Row: 16 (1 row) */
 #tile-system-status {
-    grid-column: 1 / 17;    /* x1–16 */
-    grid-row: 9 / 10;       /* Z9 */
+    grid-column: 1 / 17;
+    grid-row: 16 / 17;
 }

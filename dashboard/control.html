@@ -1,120 +1,286 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <title>Snowgames GFX Engine – Dashboard</title>
 
+    <!-- Core styles: typography, colors, controls -->
     <link rel="stylesheet" href="/static/css/backend-core.css">
+
+    <!-- Grid layout: 16×16 fixed operator grid -->
     <link rel="stylesheet" href="/static/css/backend-grid.css">
 </head>
 
 <body>
 
-<div id="dashboard-grid">
+    <div id="dashboard-grid">
 
-    <!-- ======================= -->
-    <!-- Zeile 1–2: Event Setup -->
-    <!-- ======================= -->
+        <!-- =========================================================
+             TOP AREA – EVENT & BASIC CONTEXT
+             Grid rows 1–6
+             ========================================================= -->
 
-    <section class="tile" id="tile-event-info">
-        <h2>Event Info</h2>
-        <button>Open</button>
-    </section>
+        <!-- Event Information
+             Global event metadata + discipline selection -->
+        <section class="tile" id="tile-event-info" data-tile="event.info">
+            <h2>Event Information</h2>
 
-    <section class="tile" id="tile-startlist-import">
-        <h2>Startlist Import</h2>
-        <button>Import</button>
-    </section>
+            <label for="event_title">Title</label>
+            <input id="event_title" data-id="event.title" type="text" placeholder="Event title" />
 
-    <section class="tile" id="tile-text-info">
-        <h2>Text Info</h2>
-        <button>Edit</button>
-    </section>
+            <label for="event_location">Location</label>
+            <input id="event_location" data-id="event.location" type="text" placeholder="Location / Country" />
 
-    <!-- ======================= -->
-    <!-- Zeile 3–4: Umfeld       -->
-    <!-- ======================= -->
+            <label for="event_date">Date</label>
+            <input id="event_date" data-id="event.date" type="text" placeholder="Date or period" />
 
-    <section class="tile" id="tile-weather">
-        <h2>Weather</h2>
-        <button>Load</button>
-    </section>
+            <!-- Discipline selection controls which sport-specific tiles are visible -->
+            <fieldset class="control-group" data-id="event.discipline">
+                <legend>Discipline</legend>
+                <label><input type="radio" name="event_discipline" value="biathlon" checked> Biathlon</label>
+                <label><input type="radio" name="event_discipline" value="jump"> Jump</label>
+                <label><input type="radio" name="event_discipline" value="endurance"> XC / MTB</label>
+            </fieldset>
 
-    <section class="tile" id="tile-startlist-view">
-        <h2>Startlist View</h2>
-        <button>Show</button>
-    </section>
+            <!-- Event title overlay size control -->
+            <div class="controls">
+                <button data-id="event.info.big.toggle" data-action="toggle" data-label-show="BIG"
+                    data-label-hide="HIDE">BIG</button>
+                <button data-id="event.info.small.toggle" data-action="toggle" data-label-show="SMALL"
+                    data-label-hide="HIDE">SMALL</button>
+            </div>
+        </section>
 
-    <section class="tile" id="tile-announcer-info">
-        <h2>Announcer Info</h2>
-        <button>Edit</button>
-    </section>
+        <!-- Startlist Import & Control
+             Import is destructive; selection affects display only -->
+        <section class="tile" id="tile-startlist-import" data-tile="overlay.startlist">
+            <h2>Startlist</h2>
 
-    <section class="tile" id="tile-branding">
-        <h2>Branding</h2>
-        <button>Configure</button>
-    </section>
+            <div class="status-line" data-id="startlist.status">Status: —</div>
+            <div class="status-line" data-id="startlist.selected_count">Selected classes: 0</div>
 
-    <!-- ======================= -->
-    <!-- Zeile 5–6: Livebereich -->
-    <!-- ======================= -->
+            <div class="controls">
+                <button data-id="overlay.startlist.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
 
-    <section class="tile" id="tile-race-timer">
-        <h2>Race Timer</h2>
-        <button>Start</button>
-    </section>
+                <button data-id="overlay.startlist.select_classes" data-action="open-modal">
+                    SELECT CLASSES…
+                </button>
 
-    <section class="tile" id="tile-start-control">
-        <h2>Start Control</h2>
-        <button>Manual Start</button>
-    </section>
+                <button data-id="overlay.startlist.import" data-action="import">
+                    IMPORT
+                </button>
+            </div>
 
-    <section class="tile" id="tile-athlete-live">
-        <h2>Athlete Live</h2>
-        <button>Show Athlete</button>
-    </section>
+            <p class="hint">
+                Import replaces the full startlist. Class selection affects display only.
+            </p>
+        </section>
 
-    <!-- Biathlon Athlet Detail -->
-    <section class="tile" id="tile-biathlon-athlete-detail" data-scope="BT">
-        <h2>Biathlon Athlete</h2>
-        <button>Detail</button>
-    </section>
+        <!-- Text / Info / Outro Panels
+             Central text bank for schedule, info messages and credits -->
+        <section class="tile" id="tile-text-info" data-tile="overlay.schedule">
+            <h2>Text & Info Panels</h2>
 
-    <!-- ======================= -->
-    <!-- Zeile 7–8: Ergebnisse  -->
-    <!-- ======================= -->
+            <label for="textbank_select">Text Slot</label>
+            <select id="textbank_select" data-id="textbank.slot">
+                <option value="schedule">Schedule (Program Flow)</option>
+                <option value="info">Info (delay / technical issue / wind)</option>
+                <option value="outro">Outro (Credits / Imprint / Thanks)</option>
+            </select>
 
-    <section class="tile" id="tile-finish-ranking">
-        <h2>Finish Ranking</h2>
-        <button>Show</button>
-    </section>
+            <label for="textbank_text">Text</label>
+            <textarea id="textbank_text" data-id="textbank.text" placeholder="Enter text..."></textarea>
 
-    <section class="tile" id="tile-results-full">
-        <h2>Full Results</h2>
-        <button>Open</button>
-    </section>
+            <div class="controls">
+                <button data-id="overlay.schedule.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+                <button data-id="textbank.save" data-action="save">SAVE</button>
+            </div>
+        </section>
 
-    <section class="tile" id="tile-empty">
-        <h2>Free Tile</h2>
-        <button>None</button>
-    </section>
+        <!-- =========================================================
+             CONTEXT / ENVIRONMENT
+             Grid rows 7–10
+             ========================================================= -->
 
-    <section class="tile" id="tile-biathlon-lane-overview" data-scope="BT">
-        <h2>Biathlon Lane Overview</h2>
-        <button>Overview</button>
-    </section>
+        <!-- Weather Overlay -->
+        <section class="tile" id="tile-weather" data-tile="overlay.weather">
+            <h2>Weather</h2>
 
-    <!-- ======================= -->
-    <!-- Zeile 9: Systemstatus  -->
-    <!-- ======================= -->
+            <label for="weather_temp">Temperature</label>
+            <input id="weather_temp" data-id="weather.temperature" type="text" placeholder="°C" />
 
-    <section class="tile" id="tile-system-status">
-        <h2>System Status</h2>
-        <button>Details</button>
-    </section>
+            <label for="weather_wind">Wind</label>
+            <input id="weather_wind" data-id="weather.wind" type="text" placeholder="m/s" />
 
-</div>
+            <label for="weather_vis">Visibility</label>
+            <input id="weather_vis" data-id="weather.visibility" type="text" placeholder="Visibility" />
+
+            <div class="controls">
+                <button data-id="overlay.weather.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- Name Caption / Lower Third -->
+        <section class="tile" id="tile-announcer-info" data-tile="overlay.caption">
+            <h2>Name Caption</h2>
+
+            <label for="caption_name">Name</label>
+            <input id="caption_name" data-id="caption.name" type="text" placeholder="Name" />
+
+            <label for="caption_role">Role</label>
+            <input id="caption_role" data-id="caption.role" type="text" placeholder="Role / Function" />
+
+            <div class="controls">
+                <button data-id="overlay.caption.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- Branding / Logo Overlay -->
+        <section class="tile" id="tile-branding" data-tile="overlay.branding">
+            <h2>Branding</h2>
+
+            <div class="branding-preview" data-id="branding.preview">
+                <!-- Placeholder until branding is configured externally -->
+                <div class="placeholder">Logo Preview</div>
+            </div>
+
+            <div class="controls">
+                <button data-id="overlay.branding.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+
+            <p class="hint">Branding assets are configured externally.</p>
+        </section>
+
+        <!-- =========================================================
+             LIVE CONTROL – CORE OPERATOR AREA
+             Grid rows 11–13
+             ========================================================= -->
+
+        <!-- Clock / Race Time Overlay -->
+        <section class="tile" id="tile-race-timer" data-tile="overlay.clock">
+            <h2>Clock / Race Timer</h2>
+
+            <fieldset class="control-group" data-id="clock.mode">
+                <legend>Display Mode</legend>
+                <label><input type="checkbox" data-id="clock.current.enabled" checked>
+                    Current Time</label>
+                <label><input type="checkbox" data-id="race.time.enabled">
+                    Race Time</label>
+            </fieldset>
+
+            <div class="status-line" data-id="clock.current_time">--:--:--</div>
+
+            <div class="controls">
+                <button data-id="overlay.clock.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- Athlete Start Overlay -->
+        <section class="tile" id="tile-start-control" data-tile="overlay.start">
+            <h2>Start Overlay</h2>
+
+            <fieldset class="control-group" data-id="start.options">
+                <legend>Fields</legend>
+                <label><input type="checkbox" data-id="start.show.club" checked> Club</label>
+                <label><input type="checkbox" data-id="start.show.association"> Association</label>
+                <label><input type="checkbox" data-id="start.show.flag"> Flag</label>
+            </fieldset>
+
+            <div class="controls">
+                <button data-id="overlay.start.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- Athlete Live Focus -->
+        <section class="tile" id="tile-athlete-live" data-tile="athlete.live">
+            <h2>Athlete Live</h2>
+
+            <label for="athlete_bib">BIB</label>
+            <input id="athlete_bib" data-id="athlete.bib" type="text" placeholder="Enter BIB" />
+
+            <div class="controls">
+                <button data-id="athlete.detail.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- Biathlon-specific Athlete Detail -->
+        <section class="tile" id="tile-biathlon-athlete-detail" data-scope="BT" data-tile="biathlon.athlete.detail">
+            <h2>Biathlon Athlete</h2>
+
+            <label for="athlete_bib">BIB</label>
+            <input id="athlete_bib" data-id="biathlon.athlete.bib" type="text" placeholder="Enter BIB" />
+
+            <div class="controls">
+                <button data-id="biathlon.athlete.detail.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             RESULTS & OVERVIEWS
+             Grid rows 14–15
+             ========================================================= -->
+
+        <!-- Finish Ranking -->
+        <section class="tile" id="tile-finish-ranking" data-tile="results.finish.ranking">
+            <h2>Finish Ranking</h2>
+
+            <div class="controls">
+                <button data-id="results.finish.ranking.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- Full Results -->
+        <section class="tile" id="tile-results-full" data-tile="results.full">
+            <h2>Full Results</h2>
+
+            <div class="controls">
+                <button data-id="results.full.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- Biathlon Lane Overview -->
+        <section class="tile" id="tile-biathlon-lane-overview" data-scope="BT" data-tile="biathlon.lane.overview">
+            <h2>Biathlon Lane Overview</h2>
+
+            <div class="controls">
+                <button data-id="biathlon.lane.overview.toggle" data-action="toggle" data-label-show="SHOW"
+                    data-label-hide="HIDE">SHOW</button>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             FOOTER / SYSTEM STATUS
+             Grid row 16
+             ========================================================= -->
+
+        <!-- System Status Bar (single-row footer) -->
+        <section class="tile" id="tile-system-status" data-tile="system.status">
+            <h2>System Status</h2>
+
+            <div class="status-line" data-id="status.api">API: —</div>
+            <div class="status-line" data-id="status.redis">Redis: —</div>
+            <div class="status-line" data-id="status.renderer">Renderer: —</div>
+
+            <div class="controls">
+                <button data-id="system.status.refresh" data-action="refresh">REFRESH</button>
+                <button data-id="system.status.details" data-action="details">DETAILS</button>
+            </div>
+        </section>
+
+    </div>
 
 </body>
-</html>
 
+</html>

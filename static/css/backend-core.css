@@ -1,47 +1,320 @@
-/* ===========================
-   SNOWGAMES – Backend Core Styles
-   =========================== */
+/* ==========================================================================
+   SNOWGAMES.LIVE – BACKEND CORE STYLES
+   Control Dashboard (Broadcast / Operator)
+   ========================================================================== */
+
+/* ==========================================================================
+   GLOBAL SCALE
+   ========================================================================== */
+
+html {
+    /* sanfte Skalierung für 14–17", Tablets bis ~1200px Höhe */
+    font-size: clamp(13px, 0.9vw, 16px);
+}
+
+/* ==========================================================================
+   DESIGN TOKENS
+   ========================================================================== */
+
+:root {
+    /* Backgrounds */
+    --bg-body: #111111;
+    --bg-tile: #1c1c1c;
+    --bg-tile-alt: #181818;
+    --bg-input: #262626;
+    --bg-black: #000000;
+
+    /* Borders */
+    --border-default: #333333;
+    --border-muted: #2a2a2a;
+    --border-neutral: #334455;
+
+    /* Text */
+    --text-primary: #ffffff;
+    --text-secondary: #cfcfcf;
+    --text-muted: #9a9a9a;
+    --text-placeholder: #777777;
+    --text-heading: #f0c84a;
+
+    /* Accent / Status */
+    --accent-red: #d93a3a;
+    /* SHOW / ON AIR */
+    --accent-green: #4caf50;
+    /* OK */
+    --accent-yellow: #f0ab00;
+    /* WARNING */
+    --accent-blue: #009cff;
+    /* neutral */
+
+    /* Typography (relative) */
+    --font-xs: 0.75rem;
+    --font-sm: 0.8rem;
+    --font-md: 0.85rem;
+    --font-lg: 0.95rem;
+    --font-xl: 1.05rem;
+
+    /* Spacing scale */
+    --space-xxs: 0.15rem;
+    --space-xs: 0.25rem;
+    --space-sm: 0.4rem;
+    --space-md: 0.6rem;
+    --space-lg: 0.9rem;
+
+    /* Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.35rem;
+
+    /* Buttons */
+    --btn-bg-default: #f2f2f2;
+    --btn-bg-hover: #ffffff;
+    --btn-bg-secondary: #1e1e1e;
+    --btn-bg-neutral: #26313a;
+
+    /* tile hover */
+    --bg-tile-hover: #232323;
+    --border-hover: #555555;
+    --tile-hover-shadow: 0 0 0.6rem rgba(255, 255, 255, 0.06);
+}
+
+/* ==========================================================================
+   GLOBAL
+   ========================================================================== */
+
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
     padding: 0;
-    background: #111;
-    font-family: Arial, sans-serif;
-    color: #fff;
+    background: var(--bg-body);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: var(--font-md);
+    color: var(--text-primary);
     overflow: hidden;
 }
 
-/* Grundlayout einer Tile */
-.tile {
-    background: #1c1c1c;
-    border: 1px solid #333;
-    border-radius: 6px;
-    padding: 10px;
-    box-sizing: border-box;
-    overflow: hidden;
+/* ==========================================================================
+   TILE LAYOUT
+   ========================================================================== */
 
+.tile {
+    background: var(--bg-tile);
+    border: 2px solid var(--border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
     display: flex;
     flex-direction: column;
+    gap: var(--space-xs);
+    height: 100%;
+    transition: background-color 120ms, border-color 120ms, box-shadow 120ms;
 }
 
-/* Header innerhalb einer Tile (optional später JS) */
-.tile h1, .tile h2, .tile h3 {
-    margin: 0 0 8px 0;
-    padding: 0;
+.tile:hover,
+.tile:focus-within {
+    background: var(--bg-tile-hover);
+    border-color: var(--border-hover);
+    box-shadow: var(--tile-hover-shadow);
 }
 
-/* Biathlon Tiles sind nur sichtbar, wenn das Dashboard "BT" ist */
+/* ==========================================================================
+   TILE HEADERS
+   ========================================================================== */
+
+.tile h2 {
+    margin: 0 0 var(--space-xs) 0;
+    font-size: var(--font-lg);
+    font-weight: 600;
+    color: var(--text-heading);
+    letter-spacing: 0.03em;
+}
+
+.tile h3 {
+    margin: 0 0 var(--space-xs) 0;
+    font-size: var(--font-md);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   FORM ELEMENTS
+   ========================================================================== */
+
+label {
+    font-size: var(--font-xs);
+    color: var(--text-muted);
+    line-height: 1.2;
+    margin-bottom: var(--space-xxs);
+}
+
+input,
+textarea,
+select {
+    background: var(--bg-input);
+    border: 2px solid var(--border-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-xs) var(--space-sm);
+    color: var(--text-primary);
+    font-size: var(--font-md);
+    line-height: 1.3;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-placeholder);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 6vh;
+    max-height: 18vh;
+}
+
+/* ==========================================================================
+   CHECKBOXES / RADIOS
+   ========================================================================== */
+
+fieldset {
+    border: 1px solid var(--border-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-xs) var(--space-sm);
+    margin: var(--space-xxs) 0;
+}
+
+legend {
+    font-size: var(--font-xs);
+    color: var(--text-muted);
+    padding: 0 var(--space-xs);
+}
+
+fieldset label {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    margin-right: var(--space-sm);
+    line-height: 1.2;
+}
+
+/* ==========================================================================
+   BUTTONS (ATEM / STREAMDECK LOGIC)
+   ========================================================================== */
+
+button {
+    background: var(--btn-bg-default);
+    border: 2px solid var(--border-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--font-lg);
+    font-weight: 600;
+    text-transform: uppercase;
+    line-height: 1.2;
+    color: #000;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--btn-bg-hover);
+}
+
+/* SHOW / ACTIVE */
+button.active {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+    color: #ffffff;
+}
+
+/* Secondary / OFF */
+button.secondary {
+    background: var(--btn-bg-secondary);
+    color: var(--text-secondary);
+}
+
+/* Neutral actions */
+button[data-action="import"],
+button[data-action="save"],
+button[data-action="details"],
+button[data-action="refresh"],
+button[data-action="open"],
+button[data-action="configure"] {
+    background: var(--btn-bg-neutral);
+    border-color: var(--border-neutral);
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   CONTROLS GROUP
+   ========================================================================== */
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+}
+
+/* ==========================================================================
+   STATUS LINES
+   ========================================================================== */
+
+.status-line {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+#tile-system-status {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+#tile-system-status .controls {
+    margin-left: auto;
+}
+
+/* Status states (JS later) */
+.status-line.ok {
+    color: var(--accent-green);
+}
+
+.status-line.warn {
+    color: var(--accent-yellow);
+}
+
+.status-line.error {
+    color: var(--accent-red);
+}
+
+/* ==========================================================================
+   BRANDING PREVIEW
+   ========================================================================== */
+
+.branding-preview {
+    background: var(--bg-black);
+    border: 1px solid var(--border-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm);
+    text-align: center;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   BIATHLON VISIBILITY
+   ========================================================================== */
+
 .tile[data-scope="BT"] {
-    display: block;
+    display: none;
 }
 
 body.biathlon .tile[data-scope="BT"] {
     display: flex;
 }
 
-/* Leere Tiles sichtbar halten */
-#tile-empty {
-    background: #181818;
-    border-style: dashed;
-    opacity: 0.5;
+/* ==========================================================================
+   HINTS / HELP TEXT
+   ========================================================================== */
+
+.hint {
+    font-size: var(--font-xs);
+    color: var(--text-muted);
 }
